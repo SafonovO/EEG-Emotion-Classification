@@ -14,7 +14,7 @@ if __name__ == '__main__':
 
     # Loading the data for all 16 participants using the provided DE features
     for i in range(16):
-        path = 'SEED-V/EEG_DE_features/' + str(i+1) + '_123.npz'
+        path = 'src/Data/SEED-V/EEG_DE_features/' + str(i+1) + '_123.npz'
         data_npz = np.load(path)
         data = pickle.loads(data_npz['data'])
         label = pickle.loads(data_npz['label'])

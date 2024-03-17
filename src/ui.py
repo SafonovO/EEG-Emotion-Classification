@@ -1,7 +1,11 @@
 import tkinter as tk
+from tkinter import filedialog
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
 import numpy as np
+
+def upload_data():
+    file_path = filedialog.askopenfilename(filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
 
 root = tk.Tk()
 root.title("EEG Signal Viewer")
@@ -28,5 +32,12 @@ ax.set_ylim(-2, 2)
 canvas = FigureCanvasTkAgg(fig, master=eeg_frame)
 canvas.draw()
 canvas.get_tk_widget().pack()
+
+# Button frame
+upload_button_frame = tk.Frame(root)
+upload_button_frame.pack(side=tk.LEFT, anchor=tk.N, padx=10, pady=10)
+
+upload_button = tk.Button(upload_button_frame, text="Upload", command=upload_data)
+upload_button.grid(row=2, column=0, columnspan=2)
 
 root.mainloop()

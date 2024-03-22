@@ -163,3 +163,7 @@ cython_debug/
 
 # Mac cache
 .DS_Store
+
+# SEED V and IV dataset
+src/SEED-V/*
+src/SEED_IV/*

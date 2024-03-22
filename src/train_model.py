@@ -6,15 +6,16 @@ from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import LinearSVC
 
-# Main
-if __name__ == '__main__':
+
+# Function
+def train_and_save():
     # Initialize variables
     X = []
     y = []
 
     # Loading the data for all 16 participants using the provided DE features
     for i in range(16):
-        path = 'src/Data/SEED-V/EEG_DE_features/' + str(i+1) + '_123.npz'
+        path = 'SEED-V/EEG_DE_features/' + str(i+1) + '_123.npz'
         data_npz = np.load(path)
         data = pickle.loads(data_npz['data'])
         label = pickle.loads(data_npz['label'])
@@ -37,4 +38,8 @@ if __name__ == '__main__':
     # Check the performance using the test data
     print("Training complete!")
     print(clf.score(X_test, y_test))
+
+    # Save model
+    with open('model.pkl', 'wb') as f:
+        pickle.dump(clf, f)
 

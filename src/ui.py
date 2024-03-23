@@ -6,6 +6,14 @@ import numpy as np
 from file_read import *
 from visualization import visualize_frame
 
+
+def on_close():
+    for widget in info_frame.winfo_children():
+        widget.destroy()
+    for widget in eeg_frame.winfo_children():
+        widget.destroy()
+    root.quit()  
+
 def upload_data():
     data = read_all()
 
@@ -77,5 +85,5 @@ upload_button_frame.pack(side=tk.LEFT, anchor=tk.N, padx=10, pady=10)
 
 upload_button = tk.Button(upload_button_frame, text="Upload", command=upload_data)
 upload_button.grid(row=2, column=0, columnspan=2)
-
+root.protocol("WM_DELETE_WINDOW", on_close)
 root.mainloop()

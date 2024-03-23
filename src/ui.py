@@ -16,6 +16,13 @@ def upload_data():
     if data is not None:
         # Create a single canvas widget for visualization
         canvas2 = None
+
+        sensor_data =numpy.array(data[next(key for key in data.keys() if key.endswith("_eeg"+"1"))])[:,0] 
+        visualization = visualize_frame(sensor_data)
+        canvas2 = FigureCanvasTkAgg(visualization, master=info_frame)
+        canvas2.draw()
+        canvas2.get_tk_widget().pack()
+        '''
         sensor_data = np.array(data[next(key for key in data.keys() if key.endswith("_eeg1"))])
         # Iterate over the range of time indices
         for i in range(sensor_data.shape[1]):  # Assuming sensor_data is the EEG data
@@ -34,8 +41,9 @@ def upload_data():
             # Update the Tkinter main loop to reflect changes
             root.update_idletasks()
 
-            # Pause briefly to allow the UI to update (optional)
-            root.after(200)  # Adjust the delay time as needed
+            root.after(200)  
+        '''
+
 
 root = tk.Tk()
 root.title("EEG Signal Viewer")

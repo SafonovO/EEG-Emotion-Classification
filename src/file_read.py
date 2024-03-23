@@ -69,6 +69,25 @@ def read_de_feature(data_npz):
     for i in range(45):
         print('Session {} -- Trial {} -- EmotionLabel : {}'.format(i // 15 + 1, i % 15 + 1, label_dict[label[i][0]]))
 
+def read_all():
+    """
+    This function is a wrapper over the read_mat and read_npz functions
+    that is used by the ui components to read different file types
+    """
+    mat_data = read_mat()
+    if mat_data is not None:
+        print("Successfully read .mat file")
+        # Process the data as needed
+        return mat_data
+
+    npz_data = read_npz()
+    if npz_data is not None:
+        print("Successfully read .npz file")
+        # Process the data as needed
+        return npz_data
+
+    print("Unable to read any file.")
+    return None
 
 # For testing purposes
 if __name__ == '__main__':

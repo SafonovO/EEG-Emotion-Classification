@@ -3,9 +3,39 @@ from tkinter import filedialog
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
 import numpy as np
+from file_read import *
+from visualization import visualize_frame
 
 def upload_data():
-    file_path = filedialog.askopenfilename(filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
+    data = read_all()
+
+    #destroy the previous canvas
+    for widget in info_frame.winfo_children():
+        widget.destroy()
+
+    if data is not None:
+        # Create a single canvas widget for visualization
+        canvas2 = None
+        sensor_data = np.array(data[next(key for key in data.keys() if key.endswith("_eeg1"))])
+        # Iterate over the range of time indices
+        for i in range(sensor_data.shape[1]):  # Assuming sensor_data is the EEG data
+            sensor_data = np.array(data[next(key for key in data.keys() if key.endswith("_eeg1"))])[:, i] 
+            visualization = visualize_frame(sensor_data)
+
+            # Update the canvas with the new visualization
+            if canvas2 is None:
+                canvas2 = FigureCanvasTkAgg(visualization, master=info_frame)
+                canvas2_widget = canvas2.get_tk_widget()
+                canvas2_widget.pack()
+            else:
+                canvas2.figure = visualization
+                canvas2.draw()
+
+            # Update the Tkinter main loop to reflect changes
+            root.update_idletasks()
+
+            # Pause briefly to allow the UI to update (optional)
+            root.after(200)  # Adjust the delay time as needed
 
 root = tk.Tk()
 root.title("EEG Signal Viewer")

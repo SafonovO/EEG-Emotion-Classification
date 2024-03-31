@@ -21,7 +21,7 @@ def on_close(info_frame,eeg_frame):
 
 def upload_data(eeg_frame,info_frame):
     data = read_all()
-
+    print(data)
     #destroy the previous canvas
     for widget in info_frame.winfo_children():
         widget.destroy()

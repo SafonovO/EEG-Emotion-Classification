@@ -6,7 +6,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 from file_read import *
 from graphing import *
-from graphing import *
 from visualization import visualize_frame
 from graphing import getPlot
 
@@ -21,7 +20,6 @@ def on_close(info_frame, eeg_frame):
     if info_frame is not None:
         for widget in info_frame.winfo_children():
             widget.destroy()
-    if eeg_frame is not None:
     if eeg_frame is not None:
         for widget in eeg_frame.winfo_children():
             widget.destroy()

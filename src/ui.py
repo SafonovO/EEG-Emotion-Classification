@@ -4,33 +4,41 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
 import numpy as np
 from file_read import *
+from graphing import *
 from visualization import visualize_frame
 
 
-
-
 def on_close(info_frame,eeg_frame):
-    
+
     if info_frame is not None:
         for widget in info_frame.winfo_children():
             widget.destroy()
-    if eeg_frame is not None: 
+    if eeg_frame is not None:
         for widget in eeg_frame.winfo_children():
             widget.destroy()
-    root.quit()  
+    root.quit()
 
 def upload_data(eeg_frame,info_frame):
     data = read_all()
     print(data)
     #destroy the previous canvas
+    for widget in eeg_frame.winfo_children():
+        widget.destroy()
     for widget in info_frame.winfo_children():
         widget.destroy()
 
     if data is not None:
-        # Create a single canvas widget for visualization
-        canvas2 = None
 
-        sensor_data =numpy.array(data[next(key for key in data.keys() if key.endswith("_eeg"+"1"))])[:,0] 
+        # EEG visualization
+        '''
+        fig = getPlot(mat_file, currentEEG, currentNode)
+        canvas1 = FigureCanvasTkAgg(fig, master=eeg_frame)
+        canvas1.draw()
+        canvas1.get_tk_widget().pack()
+        '''
+
+        # Brain visualization
+        sensor_data =numpy.array(data[next(key for key in data.keys() if key.endswith("_eeg"+"1"))])[:,0]
         visualization = visualize_frame(sensor_data)
         canvas2 = FigureCanvasTkAgg(visualization, master=info_frame)
         canvas2.draw()
@@ -39,7 +47,7 @@ def upload_data(eeg_frame,info_frame):
         sensor_data = np.array(data[next(key for key in data.keys() if key.endswith("_eeg1"))])
         # Iterate over the range of time indices
         for i in range(sensor_data.shape[1]):  # Assuming sensor_data is the EEG data
-            sensor_data = np.array(data[next(key for key in data.keys() if key.endswith("_eeg1"))])[:, i] 
+            sensor_data = np.array(data[next(key for key in data.keys() if key.endswith("_eeg1"))])[:, i]
             visualization = visualize_frame(sensor_data)
 
             # Update the canvas with the new visualization
@@ -54,7 +62,7 @@ def upload_data(eeg_frame,info_frame):
             # Update the Tkinter main loop to reflect changes
             root.update_idletasks()
 
-            root.after(200)  
+            root.after(200)
         '''
 
 def run():
@@ -93,3 +101,5 @@ def run():
     upload_button.grid(row=2, column=0, columnspan=2)
     root.protocol("WM_DELETE_WINDOW", lambda: on_close(eeg_frame,info_frame))
     root.mainloop()
+
+run()

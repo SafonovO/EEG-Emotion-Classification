@@ -31,20 +31,15 @@ The Description section provides an overview of the data used in the project. Th
 
 
 \section{Description}
-The project uses EEG datasets from BCMI (Brain-Like Computing and Machine Intelligence). The model used SEED IV dataset for training, which includes data from 16 participants. Each participant participated in 3 sessions where each session had 24 trials. In each trial, participants watched one of the film clips as stimulus materials to induce specific emotional state. There are 4 categories of emotions induced by clips: happy, sad, neutral and fear. During each trial, EEG signals and eye movements were collected with a 62-channel ESI NeuroScan System and SMI eye-tracking glasses. 
+The project uses EEG datasets from BCMI (Brain-Like Computing and Machine Intelligence). The model used SEED V dataset for training, which includes data from 20 subjects recruited from Shanghai Jiao Tong University. Each subject watched film clips as stimulus materials to induce specific emotional state. There are 5 categories of emotions induced by clips: happy, sad, fear, disgust and neutral. During each trial, EEG signals and eye movements were collected with a 62-channel ESI NeuroScan System and SMI eye-tracking glasses. 
 
 The EEG signals are downsampled to a 200 Hz sampling rate and processed with a bandpass filter between 1 Hz and 75 Hz to remove noise and artifacts. Differential entropy (DE) features were extracted from the EEG signals.
 \[DE = \int P(x) ln(P(x)) dx\]
 
 Eye movement features, such as pupil diameter, fixation, saccade, and blink, were also extracted from the eye-tracking data.
 
+The model is tested using SEED IV dataset, which includes data from 16 participants. Each participant participated in 3 sessions where each session had 24 trials. In this dataset, there are only 4 categories of emotions induced by clips: happy, sad, neutral and fear.
 
-\begin{figure}[h]
-    \centering
-  % \includegraphics{image}
-    \caption{Caption}
-    \label{fig:mesh1}
-\end{figure}
 
 \section{Methods}
 The proposed method is to classify EEG data into emotion state using Machine Learning. The dataset provides the extracted features from raw EEG data. The model is trained on these extracted features and classifies the emotion state using a new EEG data.
@@ -61,6 +56,15 @@ File Read:
 \\ read\_npz() function: This function opens a file manager window to ask the user to select a file of .npz format. The data is loaded from the file using numpy.load.
 \\ read\_all() function: This function loads data from both .mat and .npz file formats.
 
+Predict: 
+\\ The predict.py file defines a predict function that uses the trained model to predict emotion based on the input EEG data. It creates a probability distribution of the emotions and maps the predicted emotion to emotion label of following categories: Disgust, Fear, Sad, Neutral and Happy.
+
+UI: 
+\\ The ui.py file defines functions to create a graphical user interface using Tkinter library and displays visualization of input EEG data.
+
+The upload\_data function uploads and displays EEG data for the given trial and sensor number. It creates an EEG plot using the getplot function defined in graphing.py and a heatmap using visualize\_frame function defined in visualization.py. It allows users to enter the trial and sensor numbers. The change\_trial and change\_sensor functions handles the update for these values.
+
+The run function creates the GUI layout by setting up the window dimensions and frames for visualizations.
 
 \section{Results}
 Paragraph 1
@@ -100,12 +104,13 @@ Student 5:
 \end{itemize}
 
 \section{Conclusion}
-Paragraph 1
+The project demonstrates one of the applications of biomedical computing in classifying emotions based on EEG data. We were able to retrieve valuable information after going through the steps of data acquisition, processing the data, extracting the features and classifying the data.
 
-Paragraph 2
+The project shows potential in further enhancements in improving the model's accuracy and extracting other useful insights from the data.
+
 
 \section{Discussions}
-Paragraph 1
+The project provided us with a deeper understanding of the concepts covered in this course and gave us an opportunity to apply them throughout this project. As we went through certain obstacles during the implementation, it helped us gain some valuable learning experience. 
 
 Paragraph 2
 

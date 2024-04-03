@@ -1,95 +1,155 @@
 import tkinter as tk
 from tkinter import filedialog
+from tkinter import messagebox
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
 import numpy as np
 from file_read import *
 from visualization import visualize_frame
+from graphing import getPlot
 
+data = None  # Variable to hold the loaded data
+current_trial = 1  # Initial trial number
+current_sensor = 1
+figures = {'eeg': None, 'heatmap': None}  # Dictionary to hold figure objects
 
-
-
-def on_close(info_frame,eeg_frame):
-    
+def on_close(info_frame, eeg_frame):
+    global figures
     if info_frame is not None:
         for widget in info_frame.winfo_children():
             widget.destroy()
     if eeg_frame is not None: 
         for widget in eeg_frame.winfo_children():
             widget.destroy()
-    root.quit()  
+    root.quit()
+    # Close the figures
+    for key, fig in figures.items():
+        if fig:
+            plt.close(fig)
+            figures[key] = None
 
-def upload_data(eeg_frame,info_frame):
-    data = read_all()
-    print(data)
-    #destroy the previous canvas
+def upload_data(eeg_frame, info_frame, reset=False):
+    global data
+    global current_sensor
+    global current_trial
+    global figures
+    if reset:
+        data = None
+        current_trial = 1
+        current_sensor = 1
+    # Check if data has been loaded already
+    if data is None:
+        # Load data if not loaded
+        data = read_all()
+
+    # Destroy the previous canvases
     for widget in info_frame.winfo_children():
         widget.destroy()
+    for widget in eeg_frame.winfo_children():
+        widget.destroy()
+
+    # Close previous figures if they exist
+    for key, fig in figures.items():
+        if fig:
+            plt.close(fig)
+            figures[key] = None
 
     if data is not None:
-        # Create a single canvas widget for visualization
-        canvas2 = None
+        # Get the sensor data for the current trial
+        sensor_data = np.array(data[next(key for key in data.keys() if key.endswith("_eeg" + str(current_trial)))])
 
-        sensor_data =numpy.array(data[next(key for key in data.keys() if key.endswith("_eeg"+"1"))])[:,0] 
-        visualization = visualize_frame(sensor_data)
-        canvas2 = FigureCanvasTkAgg(visualization, master=info_frame)
-        canvas2.draw()
-        canvas2.get_tk_widget().pack()
-        '''
-        sensor_data = np.array(data[next(key for key in data.keys() if key.endswith("_eeg1"))])
-        # Iterate over the range of time indices
-        for i in range(sensor_data.shape[1]):  # Assuming sensor_data is the EEG data
-            sensor_data = np.array(data[next(key for key in data.keys() if key.endswith("_eeg1"))])[:, i] 
-            visualization = visualize_frame(sensor_data)
+        # Create a label showing the trial number
+        trial_label = tk.Label(info_frame, text="Trial Number: " + str(current_trial))
+        trial_label.pack()
 
-            # Update the canvas with the new visualization
-            if canvas2 is None:
-                canvas2 = FigureCanvasTkAgg(visualization, master=info_frame)
-                canvas2_widget = canvas2.get_tk_widget()
-                canvas2_widget.pack()
-            else:
-                canvas2.figure = visualization
-                canvas2.draw()
+        # Get the EEG plot
+        fig_eeg = getPlot(sensor_data, current_sensor)
+        # Calculate mean over all time values for each sensor
+        mean_sensor_data = np.mean(np.abs(sensor_data), axis=1)
+        # Create a heatmap of the sensor values
+        fig_heatmap = visualize_frame(mean_sensor_data)
 
-            # Update the Tkinter main loop to reflect changes
-            root.update_idletasks()
+        # Create a canvas for the heatmap
+        canvas_heatmap = FigureCanvasTkAgg(fig_heatmap, master=info_frame)
+        canvas_heatmap.draw()
+        canvas_heatmap.get_tk_widget().pack()
 
-            root.after(200)  
-        '''
+        # Create a canvas for the EEG plot
+        canvas_eeg = FigureCanvasTkAgg(fig_eeg, master=eeg_frame)
+        canvas_eeg.draw()
+        canvas_eeg.get_tk_widget().pack()
+
+        # Entry field to input sensor number
+        entry_label = tk.Label(eeg_frame, text="Enter Sensor Number:")
+        entry_label.pack()
+        sensor_entry = tk.Entry(eeg_frame)
+        sensor_entry.pack()
+        sensor_entry.insert(tk.END, str(current_sensor))
+
+        # Button to change the sensor number
+        change_sensor_button = tk.Button(eeg_frame, text="Change Sensor", command=lambda: change_sensor(sensor_entry.get(), eeg_frame, info_frame))
+        change_sensor_button.pack()
+
+        # Entry field to input trial number
+        entry_label = tk.Label(info_frame, text="Enter Trial Number:")
+        entry_label.pack()
+        trial_entry = tk.Entry(info_frame)
+        trial_entry.pack()
+        trial_entry.insert(tk.END, str(current_trial))
+
+        # Button to change the trial number
+        change_button = tk.Button(info_frame, text="Change Trial", command=lambda: change_trial(trial_entry.get(), eeg_frame, info_frame))
+        change_button.pack()
+
+        # Store the figures
+        figures['eeg'] = fig_eeg
+        figures['heatmap'] = fig_heatmap
+
+def change_trial(new_trial, eeg_frame, info_frame):
+    global current_trial
+    global current_sensor
+    global data
+    try:
+        new_trial = int(new_trial)
+        if new_trial >= 1 and new_trial <= 24:  # Ensure the trial number is within the range 1 to 24
+            current_trial = new_trial
+            current_sensor = 1
+            upload_data(eeg_frame, info_frame)
+        else:
+            raise ValueError("Trial number must be between 1 and 24")
+    except ValueError as e:
+        messagebox.showerror("Error", str(e))
+
+def change_sensor(new_sensor, eeg_frame, info_frame):
+    global current_sensor
+    try:
+        new_sensor = int(new_sensor)
+        if new_sensor >= 1 and new_sensor <= 62:  # Ensure the sensor number is within the range 0 to 61
+            current_sensor = new_sensor
+            upload_data(eeg_frame, info_frame)
+        else:
+            raise ValueError("Sensor number must be between 0 and 61")
+    except ValueError as e:
+        messagebox.showerror("Error", str(e))
 
 def run():
+    global data
     root = tk.Tk()
     root.resizable(False, False)
     root.title("EEG Signal Viewer")
-    root.geometry("1000x600")
-
+    root.geometry("1920x1080")
     # EEG frame
-    eeg_frame = tk.Frame(root, width=300, height=300, bd=1, relief=tk.SUNKEN)
+    eeg_frame = tk.Frame(root, width=550, height=350, bd=1, relief=tk.SUNKEN)
     eeg_frame.pack(side=tk.LEFT, padx=10, pady=10)
-
     # Info frame
-    info_frame = tk.Frame(root, width=300, height=400, bd=1, relief=tk.SUNKEN)
+    info_frame = tk.Frame(root, width=600, height=700, bd=1, relief=tk.SUNKEN)
     info_frame.pack(side=tk.RIGHT, padx=10, pady=10)
-
-    # Plot EEG (Implement code to take data from the file)
-    time = np.linspace(0, 1, 1000)
-    eeg_signal = np.sin(2 * np.pi * 10 * time) # sample sinusoidal graph
-    fig, ax = plt.subplots(figsize=(5, 4))
-    ax.plot(time, eeg_signal, color='b')
-    ax.set_xlabel('Time')
-    ax.set_ylabel('Amplitude')
-    ax.set_title('EEG Signal')
-    ax.grid(True)
-    ax.set_ylim(-2, 2)
-    canvas = FigureCanvasTkAgg(fig, master=eeg_frame)
-    canvas.draw()
-    canvas.get_tk_widget().pack()
-
     # Button frame
     upload_button_frame = tk.Frame(root)
-    upload_button_frame.pack(side=tk.LEFT, anchor=tk.N, padx=10, pady=10)
-
-    upload_button = tk.Button(upload_button_frame, text="Upload", command= lambda: upload_data(eeg_frame,info_frame))
-    upload_button.grid(row=2, column=0, columnspan=2)
-    root.protocol("WM_DELETE_WINDOW", lambda: on_close(eeg_frame,info_frame))
+    upload_button_frame.pack(side=tk.TOP, anchor=tk.N, padx=10, pady=10)
+    upload_button = tk.Button(upload_button_frame, text="Upload", command=lambda: upload_data(eeg_frame, info_frame, reset=True))
+    upload_button.grid(row=1, column=0, columnspan=2)
+    root.protocol("WM_DELETE_WINDOW", lambda: on_close(info_frame, eeg_frame))
     root.mainloop()
+
+run()

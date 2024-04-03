@@ -1,3 +1,4 @@
+% Code retrieved from https://github.com/ziyujia/Signal-feature-extraction_DE-and-PSD/tree/master
 function [ psd, de ] = STFT(data,stft_para)
 %input: data [n*m]          n electrodes, m time points
 %       stft_para.stftn     frequency domain sampling rate

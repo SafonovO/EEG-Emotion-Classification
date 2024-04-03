@@ -15,7 +15,6 @@ def train_and_save():
     X = []
     y = []
 
-    '''
     # Loading the data for all 16 participants using the provided DE features
     for i in range(16):
         path = 'SEED-V/EEG_DE_features/' + str(i+1) + '_123.npz'
@@ -29,8 +28,8 @@ def train_and_save():
             for k in range(data[j].shape[0]):
                 X.append(data[j][k])
                 y.append(label[j][k])
-    '''
 
+    '''
     # Load in SEED IV dataset
     path = 'SEED_IV/eeg_feature_smooth/'
 
@@ -47,6 +46,7 @@ def train_and_save():
             # Go through every de_LDS data
             for i in range(24):  # 24 trials
                 de_lds_str = "de_LDS"
+                # de_lds_str = "de_movingAve"
                 lds_data = data_mat[de_lds_str + str(i + 1)]  # Get the lds data
                 lds_data = np.swapaxes(lds_data, 0, 1)  # Swap the first axes with the second axes
                 lds_data = np.reshape(lds_data, (lds_data.shape[0], 310))  # Convert it from 3d array to 2d array
@@ -60,12 +60,13 @@ def train_and_save():
                         y.append(session2_label[i])
                     else:
                         y.append(session3_label[i])
+    '''
 
     print("Loading data complete!")
     # Split the data to training and testing data
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=23)
-    # Use LinearSVC (for now to test if it works), StandardScaler to normalize value
-    clf = make_pipeline(StandardScaler(), LinearSVC(verbose=True))
+    # Use LinearSVC, StandardScaler to normalize value
+    clf = make_pipeline(StandardScaler(), LinearSVC(dual=True, verbose=True))
     # Train the data
     print("Training data now!")
     clf.fit(X_train, y_train)

@@ -5,6 +5,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
 import numpy as np
 from file_read import *
+from graphing import *
 from visualization import visualize_frame
 from graphing import getPlot
 
@@ -13,20 +14,21 @@ current_trial = 1  # Initial trial number
 current_sensor = 1
 figures = {'eeg': None, 'heatmap': None}  # Dictionary to hold figure objects
 
+
 def on_close(info_frame, eeg_frame):
     global figures
     if info_frame is not None:
         for widget in info_frame.winfo_children():
             widget.destroy()
-    if eeg_frame is not None: 
+    if eeg_frame is not None:
         for widget in eeg_frame.winfo_children():
             widget.destroy()
-    root.quit()
     # Close the figures
     for key, fig in figures.items():
         if fig:
             plt.close(fig)
             figures[key] = None
+    root.quit()
 
 def upload_data(eeg_frame, info_frame, reset=False):
     global data
@@ -124,7 +126,7 @@ def change_sensor(new_sensor, eeg_frame, info_frame):
     global current_sensor
     try:
         new_sensor = int(new_sensor)
-        if new_sensor >= 1 and new_sensor <= 62:  # Ensure the sensor number is within the range 0 to 61
+        if new_sensor >= 1 and new_sensor <= 62:  # Ensure the sensor number is within the range 1 to 62
             current_sensor = new_sensor
             upload_data(eeg_frame, info_frame)
         else:
@@ -151,5 +153,3 @@ def run():
     upload_button.grid(row=1, column=0, columnspan=2)
     root.protocol("WM_DELETE_WINDOW", lambda: on_close(info_frame, eeg_frame))
     root.mainloop()
-
-run()

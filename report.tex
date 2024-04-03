@@ -15,21 +15,29 @@
 \begin{document}
 \maketitle
 \tableofcontents
-\begin{abstract}
-Paragraph 1
+\newpage
+% \begin{abstract}
+% Paragraph 1
 
-Paragraph 2
-\end{abstract}
+% Paragraph 2
+% \end{abstract}
 
 \section{Introduction}
-Paragraph 1
+Biomedical computing plays a significant role in decision support and classification processes. This project specifically aims to use EEG data to develop a model that can classify emotions. The final result of the project includes the classification of emotion states and visualization of the brain activity in participants. 
 
-Paragraph 2
+The report is divided as follows:
+
+The Description section provides an overview of the data used in the project. The Methods section focuses on the algorithmic details and explains the methodology and any equations or figures used in the project. It is followed by the Results section, which illustrates all the qualitative and quantitative results of this project. Accomplishments sections talks about the accomplishments as well as obstacles experienced during the implementation. Contribution section lists all the contributions of each group members. Conclusion and Discussion summarizes the findings and analyzes certain aspects of the project. At the end, Future Work section discusses potential improvements and additional work that can be done in this project.
+
 
 \section{Description}
-Paragraph 1
+The project uses EEG datasets from BCMI (Brain-Like Computing and Machine Intelligence). The model used SEED IV dataset for training, which includes data from 16 participants. Each participant participated in 3 sessions where each session had 24 trials. In each trial, participants watched one of the film clips as stimulus materials to induce specific emotional state. There are 4 categories of emotions induced by clips: happy, sad, neutral and fear. During each trial, EEG signals and eye movements were collected with a 62-channel ESI NeuroScan System and SMI eye-tracking glasses. 
 
-Paragraph 2
+The EEG signals are downsampled to a 200 Hz sampling rate and processed with a bandpass filter between 1 Hz and 75 Hz to remove noise and artifacts. Differential entropy (DE) features were extracted from the EEG signals.
+\[DE = \int P(x) ln(P(x)) dx\]
+
+Eye movement features, such as pupil diameter, fixation, saccade, and blink, were also extracted from the eye-tracking data.
+
 
 \begin{figure}[h]
     \centering
@@ -39,38 +47,25 @@ Paragraph 2
 \end{figure}
 
 \section{Methods}
-Paragraph 1
+The proposed method is to classify EEG data into emotion state using Machine Learning. The dataset provides the extracted features from raw EEG data. The model is trained on these extracted features and classifies the emotion state using a new EEG data.
 
-Paragraph 2
+Training Model:
+\\ The model is trained using SEED-IV dataset containing EEG features for three different sessions. Differential Entropy (DE) features are extracted using the de\_LDS data from each .mat file. The data is reshaped and labels are assigned to the features based on the session number. The data is split into training and testing set using 33\% of the data for testing. The model is trained using Linear Support Vector Classifier (LinearSVC) and the features are normalized using StandardScaler.
+
+Testing Model:
+\\ The model is tested using EEG data from SEED-V dataset. The dataset contains the DE features of 16 participants. Due to the inconsistency in the number of emotion labels in training and testing datasets, label 0 is skipped while loading the SEED-V dataset. The emotion labels in SEED-V are mapped to the labels used by the model. The models predicts the labels for SEED-V datasets and calculates the accuracy.
+
+File Read:
+\\ The file read module is helps in reading and processing the data from files of .mat and .npz format. 
+\\ read\_mat() function: This function opens a file manager window to ask the user to select a file of .mat format. The data is loaded from the file as a dictionary using scipy.io.loadmat. 
+\\ read\_npz() function: This function opens a file manager window to ask the user to select a file of .npz format. The data is loaded from the file using numpy.load.
+\\ read\_all() function: This function loads data from both .mat and .npz file formats.
+
 
 \section{Results}
 Paragraph 1
 
 Paragraph 2
-
-\begin{figure}[h]
-    \centering
- %  \includegraphics[width=0.75\textwidth]{mesh}
-    \caption{Caption}
-    \label{fig:mesh1}
-\end{figure}
-
-\begin{table}[h]
-\centering
-\begin{tabular}{||c c c c||} 
- \hline
- Col1 & Col2 & Col2 & Col3 \\ [0.5ex] 
- \hline\hline
- 1 & 6 & 87837 & 787 \\ 
- 2 & 7 & 78 & 5415 \\
- 3 & 545 & 778 & 7507 \\
- 4 & 545 & 18744 & 7560 \\
- 5 & 88 & 788 & 6344 \\ [1ex] 
- \hline
-\end{tabular}
-\caption{Sample Table}
-\label{table:data}
-\end{table}
 
 \section{Accomplishments}
 Paragraph 1
@@ -104,7 +99,7 @@ Student 5:
   \item (text)
 \end{itemize}
 
-\section{Conclusions}
+\section{Conclusion}
 Paragraph 1
 
 Paragraph 2
@@ -115,7 +110,13 @@ Paragraph 1
 Paragraph 2
 
 \section{Future Work}
-Paragraph 1
+The project successfully achieves its primary goal but there is room for improvement to enhance its performance and real-world applicability.
 
-Paragraph 2
+One area of potential improvement involves further data analysis to generate additional plots and identify valuable information and trends relevant to biomedical applications. The use of a larger and a more diverse dataset can also contribute to a more generalizable model. Some other features could also be extracted from the EEG to reveal some new insight and improve the accuracy.
+
+Another key area of improvement is the user interface design. The interface could be enhanced by providing users more customization options and expanding its functionality to include separate tabs for individual plots or visualizations, along with relevant generated information.
+
+With some further knowledge in the field of biomedical computing, we can look into developing a real time emotion classification system that can process EEG data in real time.
+
+
 \end{document}

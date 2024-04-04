@@ -140,7 +140,7 @@ def run():
     global data
     root = tk.Tk()
     root.resizable(False, False)
-    root.title("EEG Signal Viewer")
+    root.title("Emotion Classification using EEG")
     root.geometry("1920x1080")
     # EEG frame
     eeg_frame = tk.Frame(root, width=550, height=350, bd=1, relief=tk.SUNKEN)
@@ -151,7 +151,7 @@ def run():
     # Button frame
     upload_button_frame = tk.Frame(root)
     upload_button_frame.pack(side=tk.TOP, anchor=tk.N, padx=10, pady=10)
-    upload_button = tk.Button(upload_button_frame, text="Upload", command=lambda: upload_data(eeg_frame, info_frame, reset=True))
+    upload_button = tk.Button(upload_button_frame, text="Upload Data", command=lambda: upload_data(eeg_frame, info_frame, reset=True), width=15, height=3)
     upload_button.grid(row=1, column=0, columnspan=2)
     root.protocol("WM_DELETE_WINDOW", lambda: on_close(info_frame, eeg_frame))
     root.mainloop()

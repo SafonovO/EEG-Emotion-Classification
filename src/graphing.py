@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 # Return a figure to be displayed by the UI
 # mat_file: Dictionary containing all EEG recordings, currentNode: [0, 61]
 def getPlot(mat_file, currentNode):
-    # Concatenate all EEG recordings for the given node
 
     numSamples = len(mat_file[currentNode-1])
     times = np.array(range(numSamples))

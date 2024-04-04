@@ -24,4 +24,5 @@ def extract_from_raw(eeg_name):
 
 
 if __name__ == '__main__':
-    print(extract_from_raw("cz_eeg1"))
+    psd, de = extract_from_raw("cz_eeg1")
+    print(de)

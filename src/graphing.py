@@ -28,7 +28,7 @@ def getPlot(mat_file, currentNode, cutoff_freq=15):
     ax.plot(times,signal)
     ax.set_xlim([0, numSamples-1])
     ax.grid(True)
-    ax.set_xlabel('Time')
+    ax.set_xlabel('Time (Sample Number)')
     ax.set_ylabel('Amplitude')
     ax.set_title('Node ' + str(currentNode) + ' EEG Signal (High-pass filtered at ' + str(cutoff_freq) + ' Hz)')
     return fig

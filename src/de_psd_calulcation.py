@@ -39,8 +39,8 @@ def DE_PSD(data, stft_para):
 
     # print(m,n,l)
     l = math.floor(m/window_points)
-    psd = np.zeros([n, len(f_start)])
-    de = np.zeros([n, len(f_start)])
+    psd = np.zeros([n, l, len(f_start)])
+    de = np.zeros([n, l, len(f_start)])
 
     # Hanning window
     h_length = window * fs
@@ -63,8 +63,8 @@ def DE_PSD(data, stft_para):
                     e = e + mag_fft_data[p0] * mag_fft_data[p0]  # For calculating (x^2) for PSD
                     # E_log = E_log + log2(magFFTdata(p0)*magFFTdata(p0)+1)
                 e = e / (f_end_num[p] - f_start_num[p] + 1)  # Calculates E(x^2) by dividing the sum
-                psd[j][p] = e
-                de[j][p] = math.log(100 * e, 2)
+                psd[j][i][p] = e
+                de[j][i][p] = math.log(100 * e, 2)
                 # de(j,i,p)=log2((1+E)^4)
 
     return psd, de

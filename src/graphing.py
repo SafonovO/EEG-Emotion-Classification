@@ -15,7 +15,7 @@ def getPlot(mat_file, currentNode):
     ax.set_xlim([0, numSamples-1])
     #ax.set_ylim([-350, 350])       # some values are larger than |300| idk what the max is
     ax.grid(True)
-    ax.set_xlabel('Time')
+    ax.set_xlabel('Time (Sample Number)')
     ax.set_ylabel('Amplitude')
-    ax.set_title('Node ' + str(currentNode) + ' EEG Signal')
+    ax.set_title('Sensor ' + str(currentNode) + ' EEG Signal')
     return fig

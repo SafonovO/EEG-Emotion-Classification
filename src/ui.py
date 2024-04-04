@@ -7,7 +7,7 @@ import numpy as np
 from file_read import *
 from graphing import *
 from visualization import visualize_frame
-from graphing import getPlot
+from graphing import *
 
 data = None  # Variable to hold the loaded data
 current_trial = 1  # Initial trial number
@@ -63,6 +63,8 @@ def upload_data(eeg_frame, info_frame, reset=False):
         # Create a label showing the trial number
         trial_label = tk.Label(info_frame, text="Trial Number: " + str(current_trial))
         trial_label.pack()
+
+        sensor_data = high_pass_filter(sensor_data)
 
         # Get the EEG plot
         fig_eeg = getPlot(sensor_data, current_sensor)

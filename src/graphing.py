@@ -1,21 +1,34 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.signal import butter, filtfilt
 
-# Return a figure to be displayed by the UI
-# mat_file: Dictionary containing all EEG recordings, currentNode: [0, 61]
-def getPlot(mat_file, currentNode):
-    # Concatenate all EEG recordings for the given node
+def high_pass_filter(signal):
+    # Filter parameters
+    cutoff_freq=35
+    sampling_freq=200 
+    order=4
+    nyquist_freq = 0.5 * sampling_freq
+    cutoff = cutoff_freq / nyquist_freq
 
-    numSamples = len(mat_file[currentNode-1])
+    # Design high-pass filter
+    b, a = butter(order, cutoff, btype='high', analog=False)
+
+    # Apply the filter
+    filtered_signal = filtfilt(b, a, signal)
+    return filtered_signal
+
+def getPlot(mat_file, currentNode, cutoff_freq=15):
+    signal = mat_file[currentNode-1]
+
+    numSamples = len(signal)
     times = np.array(range(numSamples))
-
+    
     # Plotting
     fig, ax = plt.subplots(figsize=(9, 6))
-    ax.plot(times, mat_file[currentNode-1])
+    ax.plot(times,signal)
     ax.set_xlim([0, numSamples-1])
-    #ax.set_ylim([-350, 350])       # some values are larger than |300| idk what the max is
     ax.grid(True)
     ax.set_xlabel('Time')
     ax.set_ylabel('Amplitude')
-    ax.set_title('Node ' + str(currentNode) + ' EEG Signal')
+    ax.set_title('Node ' + str(currentNode) + ' EEG Signal (High-pass filtered at ' + str(cutoff_freq) + ' Hz)')
     return fig

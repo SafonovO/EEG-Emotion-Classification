@@ -151,10 +151,10 @@ def run():
 
 
     # EEG frame
-    eeg_frame = tk.Frame(root, width=550, height=350, bd=1, relief=tk.SUNKEN)
+    eeg_frame = tk.Frame(root, width=550, height=350, bd=1, relief=tk.SUNKEN, borderwidth=0, highlightthickness=0)
     eeg_frame.pack(side=tk.LEFT, padx=10, pady=10)
     # Info frame
-    info_frame = tk.Frame(root, width=600, height=700, bd=1, relief=tk.SUNKEN)
+    info_frame = tk.Frame(root, width=600, height=700, bd=1, relief=tk.SUNKEN, borderwidth=0, highlightthickness=0)
     info_frame.pack(side=tk.RIGHT, padx=10, pady=10)
     # Button frame
     upload_button_frame = tk.Frame(root)

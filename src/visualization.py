@@ -5,13 +5,13 @@ def visualize_frame(sensors_values):
     sensors_angle = []
     sensors_radius = []
 
-    with open('src/Data/SEED-IV/channel_62_pos.locs', 'r') as file:
+    with open('important/channel_62_pos.locs', 'r') as file:
         for line in file:
             words = line.split()
             sensors_angle.append(np.deg2rad(float(words[1])))
             sensors_radius.append(float(words[2]))
 
-    img = plt.imread("src/Data/human-brain-1443447004ROS-1446891627.jpg")
+    img = plt.imread("important/human-brain-1443447004ROS-1446891627.jpg")
     fig, ax = plt.subplots(figsize=(7, 8))
 
     img_height, img_width = img.shape[:2]

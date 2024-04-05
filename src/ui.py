@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import filedialog
 from tkinter import messagebox
+from tkinter import PhotoImage
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
 import numpy as np
@@ -142,6 +143,12 @@ def run():
     root.resizable(False, False)
     root.title("Emotion Classification using EEG")
     root.geometry("1920x1080")
+
+    # Add Background Image (Works fine without the function, gives an error in this case)
+    # background_image = PhotoImage(file="images/eeg.png")
+    # background_label = tk.Label(root, image=background_image)
+    # background_label.place(relwidth=1, relheight=1)
+
     # EEG frame
     eeg_frame = tk.Frame(root, width=550, height=350, bd=1, relief=tk.SUNKEN)
     eeg_frame.pack(side=tk.LEFT, padx=10, pady=10)

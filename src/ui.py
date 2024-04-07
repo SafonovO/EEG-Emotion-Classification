@@ -9,6 +9,7 @@ from file_read import *
 from graphing import *
 from visualization import visualize_frame
 from graphing import *
+from predict import *
 
 data = None  # Variable to hold the loaded data
 current_trial = 1  # Initial trial number
@@ -106,6 +107,16 @@ def upload_data(eeg_frame, info_frame, reset=False):
         change_button = tk.Button(info_frame, text="Change Trial", command=lambda: change_trial(trial_entry.get(), eeg_frame, info_frame))
         change_button.pack()
 
+        """ Need to Test:
+
+        # Predicted emotion state
+        distribution, predicted_emotion = predict(data)
+
+        # Display predicted emotion state
+        emotion_state_label = tk.Label(info_frame, text="Predicted Emotion: " + predicted_emotion)
+        emotion_state_label.pack()
+        """
+
         # Store the figures
         figures['eeg'] = fig_eeg
         figures['heatmap'] = fig_heatmap
@@ -156,6 +167,9 @@ def run():
     # Info frame
     info_frame = tk.Frame(root, width=600, height=700, bd=1, relief=tk.SUNKEN, borderwidth=0, highlightthickness=0)
     info_frame.pack(side=tk.RIGHT, padx=10, pady=10)
+    # Text frame
+    text_frame = tk.Frame(root, width=300, height=50, bd=1, relief=tk.SUNKEN, borderwidth=0, highlightthickness=0)
+    text_frame.pack(side=tk.BOTTOM, anchor=tk.S, padx=10, pady=10)
     # Button frame
     upload_button_frame = tk.Frame(root)
     upload_button_frame.pack(side=tk.TOP, anchor=tk.N, padx=10, pady=10)

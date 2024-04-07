@@ -49,6 +49,8 @@ def upload_data(eeg_frame, info_frame, text_frame, reset=False):
     # Destroy the previous canvases
     for widget in info_frame.winfo_children():
         widget.destroy()
+    for widget in text_frame.winfo_children():
+        widget.destroy()
     for widget in eeg_frame.winfo_children():
         widget.destroy()
 

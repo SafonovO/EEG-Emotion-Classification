@@ -113,7 +113,7 @@ def upload_data(eeg_frame, info_frame, reset=False):
         distribution, predicted_emotion = predict(data)
 
         # Display predicted emotion state
-        emotion_state_label = tk.Label(info_frame, text="Predicted Emotion: " + predicted_emotion)
+        emotion_state_label = tk.Label(text_frame, text="Predicted Emotion: " + predicted_emotion)
         emotion_state_label.pack()
         """
 

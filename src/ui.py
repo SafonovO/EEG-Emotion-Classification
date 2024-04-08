@@ -111,7 +111,11 @@ def upload_data(eeg_frame, info_frame, text_frame, mat_entry, reset=False):
 
         # Predicted emotion state
         try:
-            distribution, predicted_emotion = predict(data[mat_entry.get()])
+            if len(mat_entry.get().strip()) != 0:
+                distribution, predicted_emotion = predict(data[mat_entry.get()])
+            else:
+                distribution, predicted_emotion = predict(data[next(key for key in data.keys() if key.endswith("_eeg" + str(current_trial)))])
+
             emotion_state_label = tk.Label(text_frame, text="Predicted Emotion: " + predicted_emotion)
         except KeyError as err:
             emotion_state_label = tk.Label(text_frame, text="Cannot predict the emotion: Invalid EEG matrix name")
@@ -180,11 +184,11 @@ def run():
     # Entry field to input matrix name
     entry_frame = tk.Frame(root)
     entry_frame.pack(side=tk.TOP, anchor=tk.N, padx=10, pady=10)
-    mat_entry_label = tk.Label(entry_frame, text="Enter the EEG Matrix name in your .mat file:")
+    mat_entry_label = tk.Label(entry_frame, text="(OPTIONAL) Enter in matrix name:")
     mat_entry_label.pack()
     mat_entry = tk.Entry(entry_frame)
     mat_entry.pack()
-    mat_entry.insert(tk.END, "cz_eeg1")
+    mat_entry.insert(tk.END, "")
 
     upload_button = tk.Button(upload_button_frame, text="Upload Data",
                               command=lambda: upload_data(eeg_frame, info_frame, text_frame, mat_entry, reset=True), width=15,

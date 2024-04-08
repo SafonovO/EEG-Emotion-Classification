@@ -17,7 +17,7 @@ def high_pass_filter(signal):
     filtered_signal = filtfilt(b, a, signal)
     return filtered_signal
 
-def getPlot(mat_file, currentNode, cutoff_freq=15):
+def getPlot(mat_file, currentNode, cutoff_freq=35):
     signal = mat_file[currentNode-1]
 
     numSamples = len(signal)

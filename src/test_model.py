@@ -112,17 +112,7 @@ if __name__ == '__main__':
     print("Testing the model with SEED IV dataset")
     # print(clf.score(seedV_data, seedV_labels))
     prediction = clf.predict(seedIV_data)
-    correct_pred = 0
-    total_data = len(seedIV_data)//62
-    for i in range(total_data):
-        emotion_prob = np.zeros(5)
-        for j in range(62):
-            emotion_idx = int(prediction[(i*62)+j])
-            emotion_prob[emotion_idx] = emotion_prob[emotion_idx] + 1
-        if np.argmax(emotion_prob) == seedIV_labels[i*62]:
-            correct_pred = correct_pred + 1
-
-    print("Accuracy for " + str(total_data) + " EEG data is " + str(correct_pred/total_data))
+    print("Accuracy for SEED IV dataset", clf.score(seedIV_data, seedIV_labels))
 
     print("Prediction frequency distribution:")
     emotion_prob = np.zeros(5)

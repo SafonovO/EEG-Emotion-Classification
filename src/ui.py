@@ -123,7 +123,7 @@ def upload_data(eeg_frame, info_frame, text_frame, mat_entry, reset=False):
         figures['eeg'] = fig_eeg
         figures['heatmap'] = fig_heatmap
 
-def change_trial(eeg_frame, info_frame, text_frame, mat_entry):
+def change_trial(new_trial, eeg_frame, info_frame, text_frame, mat_entry):
     global current_trial
     global current_sensor
     global data

@@ -32,7 +32,7 @@ def on_close(info_frame, eeg_frame):
             figures[key] = None
     root.quit()
 
-def upload_data(eeg_frame, info_frame, text_frame, reset=False):
+def upload_data(eeg_frame, info_frame, text_frame, mat_entry, reset=False):
     global data
     global current_sensor
     global current_trial
@@ -95,7 +95,7 @@ def upload_data(eeg_frame, info_frame, text_frame, reset=False):
         sensor_entry.insert(tk.END, str(current_sensor))
 
         # Button to change the sensor number
-        change_sensor_button = tk.Button(eeg_frame, text="Change Sensor", command=lambda: change_sensor(sensor_entry.get(), eeg_frame, info_frame, text_frame))
+        change_sensor_button = tk.Button(eeg_frame, text="Change Sensor", command=lambda: change_sensor(sensor_entry.get(), eeg_frame, info_frame, text_frame, mat_entry))
         change_sensor_button.pack()
 
         # Entry field to input trial number
@@ -106,21 +106,24 @@ def upload_data(eeg_frame, info_frame, text_frame, reset=False):
         trial_entry.insert(tk.END, str(current_trial))
 
         # Button to change the trial number
-        change_button = tk.Button(info_frame, text="Change Trial", command=lambda: change_trial(trial_entry.get(), eeg_frame, info_frame, text_frame))
+        change_button = tk.Button(info_frame, text="Change Trial", command=lambda: change_trial(trial_entry.get(), eeg_frame, info_frame, text_frame, mat_entry))
         change_button.pack()
 
         # Predicted emotion state
-        distribution, predicted_emotion = predict(data["cz_eeg1"])
+        try:
+            distribution, predicted_emotion = predict(data[mat_entry.get()])
+            emotion_state_label = tk.Label(text_frame, text="Predicted Emotion: " + predicted_emotion)
+        except KeyError as err:
+            emotion_state_label = tk.Label(text_frame, text="Cannot predict the emotion: Invalid EEG matrix name")
 
         # Display predicted emotion state
-        emotion_state_label = tk.Label(text_frame, text="Predicted Emotion: " + predicted_emotion)
         emotion_state_label.pack()
 
         # Store the figures
         figures['eeg'] = fig_eeg
         figures['heatmap'] = fig_heatmap
 
-def change_trial(eeg_frame, info_frame, text_frame):
+def change_trial(eeg_frame, info_frame, text_frame, mat_entry):
     global current_trial
     global current_sensor
     global data
@@ -129,19 +132,19 @@ def change_trial(eeg_frame, info_frame, text_frame):
         if new_trial >= 1 and new_trial <= 24:  # Ensure the trial number is within the range 1 to 24
             current_trial = new_trial
             current_sensor = 1
-            upload_data(eeg_frame, info_frame, text_frame)
+            upload_data(eeg_frame, info_frame, text_frame, mat_entry)
         else:
             raise ValueError("Trial number must be between 1 and 24")
     except ValueError as e:
         messagebox.showerror("Error", str(e))
 
-def change_sensor(new_sensor, eeg_frame, info_frame, text_frame):
+def change_sensor(new_sensor, eeg_frame, info_frame, text_frame, mat_entry):
     global current_sensor
     try:
         new_sensor = int(new_sensor)
         if new_sensor >= 1 and new_sensor <= 62:  # Ensure the sensor number is within the range 1 to 62
             current_sensor = new_sensor
-            upload_data(eeg_frame, info_frame, text_frame)
+            upload_data(eeg_frame, info_frame, text_frame, mat_entry)
         else:
             raise ValueError("Sensor number must be between 0 and 61")
     except ValueError as e:
@@ -173,7 +176,20 @@ def run():
     # Button frame
     upload_button_frame = tk.Frame(root)
     upload_button_frame.pack(side=tk.TOP, anchor=tk.N, padx=10, pady=10)
-    upload_button = tk.Button(upload_button_frame, text="Upload Data", command=lambda: upload_data(eeg_frame, info_frame, text_frame, reset=True), width=15, height=3)
+
+    # Entry field to input matrix name
+    entry_frame = tk.Frame(root)
+    entry_frame.pack(side=tk.TOP, anchor=tk.N, padx=10, pady=10)
+    mat_entry_label = tk.Label(entry_frame, text="Enter the EEG Matrix name in your .mat file:")
+    mat_entry_label.pack()
+    mat_entry = tk.Entry(entry_frame)
+    mat_entry.pack()
+    mat_entry.insert(tk.END, "cz_eeg1")
+
+    upload_button = tk.Button(upload_button_frame, text="Upload Data",
+                              command=lambda: upload_data(eeg_frame, info_frame, text_frame, mat_entry, reset=True), width=15,
+                              height=3)
     upload_button.grid(row=1, column=0, columnspan=2)
+
     root.protocol("WM_DELETE_WINDOW", lambda: on_close(info_frame, eeg_frame))
     root.mainloop()

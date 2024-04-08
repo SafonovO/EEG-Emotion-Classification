@@ -68,25 +68,6 @@ def upload_data(eeg_frame, info_frame, text_frame, mat_entry, reset=False):
         trial_label = tk.Label(info_frame, text="Trial Number: " + str(current_trial))
         trial_label.pack()
 
-        sensor_data = high_pass_filter(sensor_data)
-
-        # Get the EEG plot
-        fig_eeg = getPlot(sensor_data, current_sensor)
-        # Calculate mean over all time values for each sensor
-        mean_sensor_data = np.mean(np.abs(sensor_data), axis=1)
-        # Create a heatmap of the sensor values
-        fig_heatmap = visualize_frame(mean_sensor_data)
-
-        # Create a canvas for the heatmap
-        canvas_heatmap = FigureCanvasTkAgg(fig_heatmap, master=info_frame)
-        canvas_heatmap.draw()
-        canvas_heatmap.get_tk_widget().pack()
-
-        # Create a canvas for the EEG plot
-        canvas_eeg = FigureCanvasTkAgg(fig_eeg, master=eeg_frame)
-        canvas_eeg.draw()
-        canvas_eeg.get_tk_widget().pack()
-
         # Entry field to input sensor number
         entry_label = tk.Label(eeg_frame, text="Enter Sensor Number:")
         entry_label.pack()
@@ -98,6 +79,15 @@ def upload_data(eeg_frame, info_frame, text_frame, mat_entry, reset=False):
         change_sensor_button = tk.Button(eeg_frame, text="Change Sensor", command=lambda: change_sensor(sensor_entry.get(), eeg_frame, info_frame, text_frame, mat_entry))
         change_sensor_button.pack()
 
+        sensor_data = high_pass_filter(sensor_data)
+
+        # Get the EEG plot
+        fig_eeg = getPlot(sensor_data, current_sensor)
+        # Calculate mean over all time values for each sensor
+        mean_sensor_data = np.mean(np.abs(sensor_data), axis=1)
+        # Create a heatmap of the sensor values
+        fig_heatmap = visualize_frame(mean_sensor_data)
+
         # Entry field to input trial number
         entry_label = tk.Label(info_frame, text="Enter Trial Number:")
         entry_label.pack()
@@ -108,6 +98,16 @@ def upload_data(eeg_frame, info_frame, text_frame, mat_entry, reset=False):
         # Button to change the trial number
         change_button = tk.Button(info_frame, text="Change Trial", command=lambda: change_trial(trial_entry.get(), eeg_frame, info_frame, text_frame, mat_entry))
         change_button.pack()
+
+        # Create a canvas for the heatmap
+        canvas_heatmap = FigureCanvasTkAgg(fig_heatmap, master=info_frame)
+        canvas_heatmap.draw()
+        canvas_heatmap.get_tk_widget().pack()
+
+        # Create a canvas for the EEG plot
+        canvas_eeg = FigureCanvasTkAgg(fig_eeg, master=eeg_frame)
+        canvas_eeg.draw()
+        canvas_eeg.get_tk_widget().pack()
 
         # Predicted emotion state
         try:

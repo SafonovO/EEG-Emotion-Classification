@@ -4,7 +4,7 @@ The project is an application which is able to interpret 62-channel raw EEG data
 
 ## Important Links
 
-| [Timesheet](https://1sfu-my.sharepoint.com/:x:/g/personal/hamarneh_sfu_ca/Ef_s4WY7UVxPpZngZ5eVljkByHTSBahuE1fXw5A8XSuf0A?e=AVYG3B) | [Slack channel](https://app.slack.com/client/T06AP91EYG6/C06DYV7JFDH) | [Project report](google.com) |
+| [Timesheet](https://1sfu-my.sharepoint.com/:x:/g/personal/hamarneh_sfu_ca/Ef_s4WY7UVxPpZngZ5eVljkByHTSBahuE1fXw5A8XSuf0A?e=AVYG3B) | [Slack channel](https://app.slack.com/client/T06AP91EYG6/C06DYV7JFDH) | [Project report](https://www.overleaf.com/project/65a57e5afb3c02bb10233144) |
 |-----------|---------------|-------------------------|
 
 
@@ -34,9 +34,21 @@ repository
 ├── src                          ## App source code (Python)
     ├── images                   ## Images for UX enhancement (work in progress)
     ├── important                ## Non-code files critical for the app's function
+    ├── App.py                   ## Runs the app
+    ├── de_psd_calculation.py    ## Extracts DE and PSD features from raw EEG data
+    ├── feature_extraction.py    ## Extracts DE and PSD features with specific parameters
+    ├── file_read.py             ## A collection of functions to read .mat and .npz files
+    ├── graphing.py              ## Creates graphs of the EEG data
+    ├── model.pkl                ## Trained model for prediction
+    ├── predict.py               ## Predicts an emotion from raw EEG input data
+    ├── test_model.py            ## Loads and tests a model
+    ├── train_model.py           ## Loads DE features and trains a model
+    ├── ui.py                    ## Displays the UI of the app
+    ├── visualization.py         ## Creates the image that visualizes the sensors on the brain
 ├── LISCENSE                     ## Liscensing   
 ├── README.md                    ## You are here
 ├── report.tex                   ## Project report
+├── requirements.txt             ## Requirements for running the app
 ```
 
 <a name="installation"></a>

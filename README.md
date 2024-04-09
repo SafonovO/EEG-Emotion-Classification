@@ -1,26 +1,15 @@
-# SFU CMPT 340 Project Template -- Replace with project title
-This repository is a template for your CMPT 340 course project.
-Replace the title with your project title, and **add a snappy acronym that people remember (mnemonic)**.
+# Emotion Classification Using EEG Data
 
-Add a 1-2 line summary of your project here.
+The project is an application which is able to interpret 62-channel raw EEG data. It displays visual representations of the data: a heatmap of the brain activity and plots for each sensor on the brain. A pre-trained classification model then predicts the patient's emotion based on differential entropy features extracted from the data.
 
 ## Important Links
 
-| [Timesheet](https://google.com) | [Slack channel](https://google.com) | [Project report](https://google.com) |
+| [Timesheet](https://1sfu-my.sharepoint.com/:x:/g/personal/hamarneh_sfu_ca/Ef_s4WY7UVxPpZngZ5eVljkByHTSBahuE1fXw5A8XSuf0A?e=AVYG3B) | [Slack channel](https://app.slack.com/client/T06AP91EYG6/C06DYV7JFDH) | [Project report](https://www.overleaf.com/project/65a57e5afb3c02bb10233144) |
 |-----------|---------------|-------------------------|
 
 
-- Timesheet: Link your timesheet (pinned in your project's Slack channel) where you track per student the time and tasks completed/participated for this project/
-- Slack channel: Link your private Slack project channel.
-- Project report: Link your Overleaf project report document.
-
-
-## Video/demo/GIF
-Record a short video (1:40 - 2 minutes maximum) or gif or a simple screen recording or even using PowerPoint with audio or with text, showcasing your work.
-
-
 ## Table of Contents
-1. [Demo](#demo)
+1. [Video Description and Demonstration](#demo)
 
 2. [Installation](#installation)
 
@@ -30,28 +19,36 @@ Record a short video (1:40 - 2 minutes maximum) or gif or a simple screen record
 
 
 <a name="demo"></a>
-## 1. Example demo
+## 1. Video Description and Demonstration
 
-A minimal example to showcase your work
 
-```python
-from amazing import amazingexample
-imgs = amazingexample.demo()
-for img in imgs:
-    view(img)
-```
 
-### What to find where
+https://github.com/sfu-cmpt340/2024_1_project_17/assets/115741743/9740200b-e547-4092-a347-0f3dee0b3af9
 
-Explain briefly what files are found where
+
+
+### File Information
 
 ```bash
 repository
-├── src                          ## source code of the package itself
-├── scripts                      ## scripts, if needed
-├── docs                         ## If needed, documentation   
+├── src                          ## App source code (Python)
+    ├── images                   ## Images for UX enhancement (work in progress)
+    ├── important                ## Non-code files critical for the app's function
+    ├── App.py                   ## Runs the app
+    ├── de_psd_calculation.py    ## Extracts DE and PSD features from raw EEG data
+    ├── feature_extraction.py    ## Extracts DE and PSD features with specific parameters
+    ├── file_read.py             ## A collection of functions to read .mat and .npz files
+    ├── graphing.py              ## Creates graphs of the EEG data
+    ├── model.pkl                ## Trained model for prediction
+    ├── predict.py               ## Predicts an emotion from raw EEG input data
+    ├── test_model.py            ## Loads and tests a model
+    ├── train_model.py           ## Loads DE features and trains a model
+    ├── ui.py                    ## Displays the UI of the app
+    ├── visualization.py         ## Creates the image that visualizes the sensors on the brain
+├── LISCENSE                     ## Liscensing   
 ├── README.md                    ## You are here
-├── requirements.yml             ## If you use conda
+├── report.tex                   ## Project report
+├── requirements.txt             ## Requirements for running the app
 ```
 
 <a name="installation"></a>

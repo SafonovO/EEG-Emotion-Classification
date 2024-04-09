@@ -8,10 +8,6 @@ The project is an application which is able to interpret 62-channel raw EEG data
 |-----------|---------------|-------------------------|
 
 
-- Timesheet: Link your timesheet (pinned in your project's Slack channel) where you track per student the time and tasks completed/participated for this project/
-- Slack channel: Link your private Slack project channel.
-- Project report: Link your Overleaf project report document.
-
 ## Table of Contents
 1. [Video Description and Demonstration](#demo)
 
@@ -35,11 +31,12 @@ https://github.com/sfu-cmpt340/2024_1_project_17/assets/115741743/9740200b-e547-
 
 ```bash
 repository
-├── src                          ## source code of the package itself
-├── scripts                      ## scripts, if needed
-├── docs                         ## If needed, documentation   
+├── src                          ## App source code (Python)
+    ├── images                   ## Images for UX enhancement (work in progress)
+    ├── important                ## Non-code files critical for the app's function
+├── LISCENSE                     ## Liscensing   
 ├── README.md                    ## You are here
-├── requirements.yml             ## If you use conda
+├── report.tex                   ## Project report
 ```
 
 <a name="installation"></a>

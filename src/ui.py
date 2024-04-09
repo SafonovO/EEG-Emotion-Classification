@@ -63,7 +63,7 @@ def upload_data(eeg_frame, info_frame, text_frame, mat_entry, reset=False):
     if data is not None:
         # Get the sensor data for the current trial
         sensor_data = np.array(data[next(key for key in data.keys() if key.endswith("_eeg" + str(current_trial)))])
-
+        trial_count = sum(1 for key in data.keys() if "_eeg" in key)
         # Create a label showing the trial number
         trial_label = tk.Label(info_frame, text="Trial Number: " + str(current_trial))
         trial_label.pack()
@@ -96,7 +96,7 @@ def upload_data(eeg_frame, info_frame, text_frame, mat_entry, reset=False):
         trial_entry.insert(tk.END, str(current_trial))
 
         # Button to change the trial number
-        change_button = tk.Button(info_frame, text="Change Trial", command=lambda: change_trial(trial_entry.get(), eeg_frame, info_frame, text_frame, mat_entry))
+        change_button = tk.Button(info_frame, text="Change Trial", command=lambda: change_trial(trial_entry.get(), eeg_frame, info_frame, text_frame, mat_entry,trial_count))
         change_button.pack()
 
         # Create a canvas for the heatmap
@@ -127,18 +127,18 @@ def upload_data(eeg_frame, info_frame, text_frame, mat_entry, reset=False):
         figures['eeg'] = fig_eeg
         figures['heatmap'] = fig_heatmap
 
-def change_trial(new_trial, eeg_frame, info_frame, text_frame, mat_entry):
+def change_trial(new_trial, eeg_frame, info_frame, text_frame, mat_entry,trial_count):
     global current_trial
     global current_sensor
     global data
     try:
         new_trial = int(new_trial)
-        if new_trial >= 1 and new_trial <= 24:  # Ensure the trial number is within the range 1 to 24
+        if new_trial >= 1 and new_trial <= trial_count:  # Ensure the trial number is within the range 1 to 24
             current_trial = new_trial
             current_sensor = 1
             upload_data(eeg_frame, info_frame, text_frame, mat_entry)
         else:
-            raise ValueError("Trial number must be between 1 and 24")
+            raise ValueError(f"Trial number must be between 1 and {trial_count}")
     except ValueError as e:
         messagebox.showerror("Error", str(e))
 
